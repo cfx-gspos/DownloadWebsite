@@ -1,0 +1,58 @@
+﻿@page "/Category"
+@using Syncfusion.Blazor.Inputs
+@using DownloadWebsite.Data
+@using Syncfusion.Blazor.Grids
+@inject CategoryService  CategoryService
+<h3>Category</h3>
+<SfGrid DataSource="dataSource" AllowPaging="true" Toolbar="@(new List<string>() { "Add", "Edit", "Delete" })"
+        AllowFiltering="true" AllowSorting="true">
+    <GridEvents OnActionBegin="ActionBeginHandler" TValue="Category"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="@EditMode.Dialog">
+        <Template>
+            @{ var obj = (context as Category); }
+            <div>
+                <div class="form-row">
+                    @if (obj.ID != 0)
+                    {
+<div class="form-group col-md-6">
+    <SfNumericTextBox @bind-Value="@obj.ID" Enabled="@((obj.ID == null) ? true : false)" FloatLabelType="FloatLabelType.Always" Placeholder="ID"></SfNumericTextBox>
+</div>                    }
+                    <div class="form-group col-md-6">
+                        <SfTextBox @bind-Value="@obj.Name" FloatLabelType="FloatLabelType.Always" Placeholder="Customer Name">
+                        </SfTextBox>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </Template>
+    </GridEditSettings>
+    <GridColumns>
+        <GridColumn Field="@nameof(Category.ID)" IsPrimaryKey="true"></GridColumn>
+        <GridColumn Field="@nameof(Category.Name)"></GridColumn>
+    </GridColumns>
+</SfGrid>
+@code { public List<Category> dataSource { get; set; }
+            protected override void OnInitialized()
+            {
+                dataSource = CategoryService.GetAll();
+            }
+            public void ActionBeginHandler(ActionEventArgs<Category> args)
+            {
+                if (args.RequestType.ToString().ToLower() == "save")
+                {
+                    if (args.Action.ToLower() == "add")
+                    {
+                        CategoryService.Add(args.Data as Category);
+                    }
+                    else if (args.Action.ToLower() == "edit")
+                    {
+                        CategoryService.Update(args.Data as Category);
+                    }
+                }
+                else if (args.RequestType.ToString().ToLower() == "delete")
+                {
+                    CategoryService.Delete(args.Data as Category);
+                }
+            } }
