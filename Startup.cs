@@ -25,7 +25,8 @@ namespace DownloadWebsite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<CategoryService>();
-           
+            services.AddScoped<FileService>();
+
             services.AddDbContext<SoftwareDbContext>(options =>
 options.UseSqlServer(
  Configuration.GetConnectionString("DefaultConnection")));

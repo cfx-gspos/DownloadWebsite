@@ -1,7 +1,115 @@
 ﻿@page "/"
+@using Syncfusion.Blazor.Lists
+@using Syncfusion.Blazor.Inputs
+@using DownloadWebsite.Data
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Cards
+@using Syncfusion.Blazor.Buttons
+@inject CategoryService  CategoryService
+@inject FileService  FileService
+@layout EmptyLayout
+<div class="row">
+    <div class="col col-md-3">
+        <!-- ListView element -->
+        <SfListView Enable="true" @ref="@SfList" CssClass="listview" DataSource="@dataSource" TValue="Category">
+            <ListViewFieldSettings Id="ID" Text="Name"></ListViewFieldSettings>
 
-<h1>Hello, world!</h1>
+            <ListViewEvents TValue="Category"
+                            Selected="@(e => Select(e))">
+            </ListViewEvents>
+        </SfListView>
+    </div>
+    <div class="col col-md-9" style="background-color: rgba(200,200,200,.1);
+        height: 1000px;">
+        <div class="row">
+            <div class="col col-md-12">
+                <SfTextBox Placeholder="按回车开始搜索"  @ref="txtKeyWord" @bind-Value="keyWord" @onkeyup='@(e => Search(e))'   ></SfTextBox>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var file in fileSource)
+            {
+                <div class="col col-md-3" style="margin-bottom:5px;margin-top:5px;">
+                    <SfCard ID="BasicCard">
+                        <CardHeader Title="@file.Name" />
+                        <CardContent Content="@( file.Description+" \n  "+ file.FileSize+"MB")" />
+                        <CardFooter>
+                            <CardFooterContent>
+                                <a class="btn btn-primary" target="_blank" href="@file.Url"> Download</a>
+                            </CardFooterContent>
+                        </CardFooter>
+                    </SfCard>
+                </div>
+            }
 
-Welcome to your new app.
+        </div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    </div>
+</div>
+
+@code{
+    SfListView<Category> SfList = new SfListView<Category>();
+    List<string> Events = new List<string>();
+    public List<Category> dataSource { get; set; }
+    public List<File> fileSource { get; set; }
+    public string keyWord { get; set; }
+    public int categoryID = 0;
+    SfTextBox txtKeyWord = new SfTextBox();
+    protected override void OnInitialized()
+    {
+        dataSource = CategoryService.GetAllForMenu();
+        fileSource = FileService.GetAll();
+        SfList.SelectItem(new Category { ID = 0 });
+    }
+    public void Select(dynamic args)
+    {
+        categoryID = (int)args.Data.ID;
+        fileSource = FileService.GetByCategoryID(categoryID);
+    }
+    public async void Search(KeyboardEventArgs args)
+    {
+
+        if (args.Key== "Enter")
+        {
+            fileSource = FileService.GetByCategoryID(categoryID, keyWord);
+            System.Threading.Thread.Sleep(1000);
+            fileSource = FileService.GetByCategoryID(categoryID, keyWord);
+        }
+    }
+ 
+}
+<style>
+    html, body {
+        height: 100%;
+    }
+
+    .e-list-item, .listview, .listviewgrp {
+        border: 1px solid #dddddd;
+        border-radius: 3px;
+    }
+
+    .control-section {
+        overflow: auto;
+    }
+
+    #flat-list,
+    #group-list {
+        width: 49%;
+        margin: auto;
+        margin-bottom: 15px;
+    }
+
+        #flat-list h4, #group-list h4 {
+            padding-left: 16px;
+        }
+
+    #flat-list {
+        float: left;
+        padding-left: 16px;
+    }
+
+    #group-list {
+        float: right;
+        padding-right: 16px;
+    }
+</style>

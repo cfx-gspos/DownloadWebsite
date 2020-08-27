@@ -1,0 +1,52 @@
+﻿@using Syncfusion.Blazor.Inputs
+@using DownloadWebsite.Data;
+@using Syncfusion.Blazor.Grids;
+@using  Syncfusion.Blazor.Calendars;
+
+<div>
+    <SfGrid DataSource="FileList" Toolbar="@(new List<string>() { "Add", "Edit", "Delete" })">
+
+        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="@EditMode.Dialog">
+            <Template>
+                @{ var obj = (context as File); }
+                <div>
+                    <div class="form-group" style="display:none;">
+                        <SfNumericTextBox @bind-Value="@obj.ID" FloatLabelType="FloatLabelType.Always" Placeholder="ID">
+                        </SfNumericTextBox>
+                    </div>
+                    <div class="form-group">
+                        <SfTextBox @bind-Value="@obj.Name" FloatLabelType="FloatLabelType.Always" Placeholder="File Name">
+                        </SfTextBox>
+                    </div>
+                    <div class="form-group">
+                        <SfTextBox @bind-Value="@obj.Url" FloatLabelType="FloatLabelType.Always" Placeholder="Url">
+                        </SfTextBox>
+                    </div>
+                    <div class="form-group">
+                        <SfTextBox Multiline="true" Width="800px" @bind-Value="@obj.Description" FloatLabelType="FloatLabelType.Always" Placeholder="Description">
+                        </SfTextBox>
+                    </div>
+                    <div class="form-group">
+                        <SfNumericTextBox @bind-Value="@obj.FileSize" FloatLabelType="FloatLabelType.Always"  Placeholder="File Size">
+                        </SfNumericTextBox> 
+                    </div>
+                </div>
+            </Template>
+        </GridEditSettings>
+        <GridColumns>
+            <GridColumn Field="@nameof(File.ID)" IsPrimaryKey="true" Visible="false"></GridColumn>
+            <GridColumn Field="@nameof(File.Name)" HeaderText="File Name"></GridColumn>
+            <GridColumn Field="@nameof(File.Url)" HeaderText="Url"></GridColumn>
+            <GridColumn Field="@nameof(File.Description)" HeaderText="Description"></GridColumn>
+            <GridColumn Field="@nameof(File.FileSize)" HeaderText="File Size"></GridColumn>
+            <GridColumn Field="@nameof(File.CreatedDateTime)" HeaderText="Created Date Time"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+</div>
+
+
+@code {
+    [Parameter]
+    public List<File> FileList { get; set; }
+
+}

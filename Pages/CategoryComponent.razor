@@ -14,17 +14,21 @@
                 <div class="form-row">
                     @if (obj.ID != 0)
                     {
-<div class="form-group col-md-6">
-    <SfNumericTextBox @bind-Value="@obj.ID" Enabled="@((obj.ID == null) ? true : false)" FloatLabelType="FloatLabelType.Always" Placeholder="ID"></SfNumericTextBox>
-</div>                    }
+            <div class="form-group col-md-6">
+                <SfNumericTextBox @bind-Value="@obj.ID" Enabled="@((obj.ID == null) ? true : false)" FloatLabelType="FloatLabelType.Always" Placeholder="ID"></SfNumericTextBox>
+            </div>              }
                     <div class="form-group col-md-6">
                         <SfTextBox @bind-Value="@obj.Name" FloatLabelType="FloatLabelType.Always" Placeholder="Customer Name">
                         </SfTextBox>
                     </div>
                 </div>
-
-
-
+                <div>
+                    @if (obj.Files == null)
+                    {
+                        obj.Files = new List<File>();
+                    }
+                    <FileComponent FileList="obj.Files"> </FileComponent>
+                </div>
             </div>
         </Template>
     </GridEditSettings>
