@@ -16,7 +16,7 @@ namespace DownloadWebsite.Data
         }
         public List<File> GetAll()
         {
-            return db.Files.ToList();
+            return db.Files.Include(x=>x.Category).ToList();
         }
         public List<File> GetByCategoryID(int categoryID, string keyword = null)
         {

@@ -32,7 +32,10 @@
                 <div class="col col-md-3" style="margin-bottom:5px;margin-top:5px;">
                     <SfCard ID="BasicCard">
                         <CardHeader Title="@file.Name" />
-                        <CardContent Content="@( file.Description+" \n  "+ file.FileSize+"MB")" />
+                        <CardContent>
+                            @( file.Description+" \n  "+ file.FileSize+"MB")
+                            <div class="alert alert-primary pull-right" role="alert" style="margin-top:10px;width:50%"> @file.Category.Name</div> 
+                        </CardContent>
                         <CardFooter>
                             <CardFooterContent>
                                 <a class="btn btn-primary" target="_blank" href="@file.Url"> Download</a>
