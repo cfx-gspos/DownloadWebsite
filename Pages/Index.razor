@@ -23,7 +23,7 @@
         height: 1000px;">
         <div class="row">
             <div class="col col-md-12">
-                <SfTextBox Placeholder="按回车开始搜索"  @ref="txtKeyWord" @bind-Value="keyWord" @onkeyup='@(e => Search(e))'   ></SfTextBox>
+                <SfTextBox  Placeholder="按回车开始搜索" @ref="txtKeyWord" @bind-Value="keyWord" @onkeyup='@(e => Search(e))' CssClass="e-normal" ></SfTextBox>    
             </div>
         </div>
         <div class="row">
@@ -34,11 +34,11 @@
                         <CardHeader Title="@file.Name" />
                         <CardContent>
                             @( file.Description+" \n  "+ file.FileSize+"MB")
-                            <div class="alert alert-primary pull-right" role="alert" style="margin-top:10px;width:50%"> @file.Category.Name</div> 
+                         
                         </CardContent>
                         <CardFooter>
                             <CardFooterContent>
-                                <a class="btn btn-primary" target="_blank" href="@file.Url"> Download</a>
+                                <span class="alert alert-primary pull-right" role="alert" style="margin-top:10px;width:50%"> @file.Category.Name</span>         <a  class="btn btn-primary" target="_blank" href="@file.Url" style="float: right;border: 1px solid;"> Download</a>
                             </CardFooterContent>
                         </CardFooter>
                     </SfCard>
@@ -115,4 +115,29 @@
         float: right;
         padding-right: 16px;
     }
+    .e-card-content{
+        height:100px;
+    }
+
+
+    .e-input-group-icon:before {
+        font-family: e-icons;
+    }
+
+    .e-input-group .e-input-group-icon.e-input-calendar {
+        font-size: 16px;
+    }
+
+   
+
+    .e-input-group-icon:before {
+        font-family: e-icons;
+    }
+
+    .e-input-group .e-input-group-icon.e-input-date {
+        font-size: 16px;
+    }
+
+.e-input-group-icon.e-input-date:before { content: "\e993"; }
+     
 </style>
